@@ -1,5 +1,6 @@
 package org.example;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
@@ -8,131 +9,118 @@ public class Main {
         Вспоминаем старое домашние задание по теме Basics, которое я не сдал на проверку ментору
          */
         Scanner console = new Scanner(System.in);// создаем сканнер для возможности ввода
-        String[] names = new String[100]; // создаем обычный массив, из 100 элементов для names
-        String[] phoneNumbers = new String[100]; // создаем обычный массив, из 100 элементов для phoneNumbers
-        int contact = 0; // создаем переменную contact, которая сперва равна нулю после, мы будем ее прибавлять когда будем добавлять контакт
-        while (true) { // создаем цикл, где выход из цикла будет false, но он будет по логике в 5й кнопке
-            System.out.println("Пункты меню:"); // создаем меню  Пункты меню:
+        String[] names = new String[100];// создаем обычный массив, из 100 элементов для names
+        String[] phoneNumbers = new String[100];// создаем обычный массив, из 100 элементов для phoneNumbers
+        int index = 0; // создаем переменную contact, которая сперва равна нулю после, мы будем ее прибавлять когда будем добавлять контакт
+        while (true) {// создаем цикл, где выход из цикла будет false, но он будет по логике в 5й кнопке
+            System.out.println("Пункты меню:");// создаем меню  Пункты меню:
             System.out.println("1 - Добавить контакт"); //1 - Добавить контакт"
-            System.out.println("2 - Просмотреть контакты");// 2 - Просмотреть контакты
-            System.out.println("3 - Найти контакт");//3 - Найти контакт
-            System.out.println("4 - Удалить контакт"); // 4 - Удалить контакт
+            System.out.println("2 - Просмотреть контакты"); // 2 - Просмотреть контакты
+            System.out.println("3 - Найти контакт"); //3 - Найти контакт
+            System.out.println("4 - Удалить контакт");// 4 - Удалить контакт
             System.out.println("5 - Выйти"); // 5 - Выйти
+            if (!console.hasNextInt()) {
+                console.next();
+                System.out.println("Требуется ввести число от 1 до 5. Ваше значение некорректное!");
+                continue;
+            }
 
             int choice = console.nextInt(); // создаем переменную choice, чтобы пользователь смог попасть в нужный пункт меню, после будем нырять в кейсы
             console.nextLine();// // если я не ошибаюсь,  console.nextLine() ловит  enter console.next(), GPT  проверь меня
-            switch (choice) { // создаем switch, где choice будет пункт меню
-                case 1: // первый кейс добавить контакты
-                    if (contact < names.length) { // создаем условие, если количество контактов, меньше любого из массива, то проводим операцию по добавлению
-                        System.out.println("Введите Ваше имя:"); // сперва запрашиваем  имя
-                        names[contact] = console.nextLine();
-                        /*
-Всё корректно. contact — это просто индекс, по которому ты обращаешься к массиву String[]. Индексы массива всегда целые числа.
-В массиве phoneNumbers хранятся String, а contact — это число, указывает куда положить или откуда взять значение. Сам contact в массив не сохраняется, он лишь индексатор, как курсор в списке.
+            switch (choice) {// создаем switch, где choice будет пункт меню
+                case 1:// первый кейс добавить контакты
+                    if (index < names.length) {// создаем условие, если количество контактов, меньше любого из массива, то проводим операцию по добавлению
+                        System.out.println("Введите имя контакта");// сперва запрашиваем  имя
+                        names[index] = console.nextLine();
+                        System.out.println("Введите контактный номер");
+                        phoneNumbers[index] = console.nextLine();
 
-
-                         */
-                        System.out.println("Введите Ваш номер телефона:");
-                        phoneNumbers[contact] = console.nextLine(); // пользователь вводит с консоли phoneNumbers и сохраняет в массив
-                        System.out.println("Имя пользователя: " + names[contact]);// выводит сохранение
-                        System.out.println("Номер телефона: " + phoneNumbers[contact]); // выводит сохранение
-                        System.out.println("Вы успешно добавили контакт");
-                        contact = contact + 1;
-                        /*
-                        Вот теперь смотри, что здесь происходит,ты говоришь что contact - является индексом к нашим элементам массива
-                        Но первый индекс массива начинается с 0.
-                        Теперь у меня вопрос
-                        contact = contact + 1 - когда мы добавляем первый контакт, то он сохраняется в первый индекс массива?
-                        То есть 0 индексе у нас никто не сохраняется?
-
-                         */
-
-
+                        System.out.println("Вы успешно добавили контакт: " + names[index] + " Номер: " + phoneNumbers[index]);
+                        index = index + 1;
+                        break;
                     } else {
-                        System.out.println("Заполнена память! Удалите существующий контакт");// если не выполняется условия contact < names.length, то пишем что не памяти
+                        System.out.println("Невозможно добавить контакт, память заполнена");
                     }
-                    break;
-                case 2: // создаем второй кес по выводу контактов
-                    if (contact == 0) { //  создаем условия, если переменная contact = нулю, то список отсутствует
-                        System.out.println("Список контактов отсутствует");
-                        continue; // continue - возвращаемся в начало цикла, поправь меня GPT, если не прав
-                    } else { // иначе
-                        for (int i = 0; i < contact; i++) {// через for проходимся по всем контактам
-                            System.out.println("Имя " + names[i] + " Номер: " + phoneNumbers[i]);// и выводим имя и номер
-                            /*
-                            мысли вслух: тоже интересный случай, который я забыл
-                            Мы создавали int contact = 0, как переменную счетчика, а уже в for
-                            обращаемся к этой переменной как кому-то массиву, что-то я забыл, GPT помогай
-                                                         */
+                case 2:
+
+                    if (index == 0) { // создаем второй кес по выводу контактов
+                        System.out.println("Список контактов пуст.");  //  создаем условия, если переменная contact = нулю, то список отсутствует
+                        continue;                    // continue - возвращаемся в начало цикла, поправь меня GPT, если не прав
+                    } else {         // иначе
+                        for (int i = 0; i < index; i++) {         // через for проходимся по всем контактам
+                            System.out.println("Имя контакта: " + names[i] + " Номер телефона пользователя: " + phoneNumbers[i]);  // и выводим имя и номер
                         }
                         break;
                     }
-                case 3: // кейс для поиска контактов
-                    /*
-                    мысли вслух, мне не нравится как осуществляется поиск в данной программе
-                    Если мы создали 3 одинаковых пользователя, например с одинаковым именем
-                    То выводит он только первое добавленное. Не нравится
 
-                     */
-                    if (contact == 0) { // если contact равен 0, что список контактов пуст
-                        System.out.println("Список контактов отсутствует");
+                case 3: // кейс для поиска контактов
+
+                    if (index == 0) {
+                        System.out.println("Список контактов пуст."); // если contact равен 0, что список контактов пуст
                         continue;
                     } else {
                         System.out.println("Введите имя для поиска");
-                        String search = console.nextLine();
-                        boolean name_not = false;  //через boolean реализуем флаг
-                        for (int i = 0; i < contact; i++) { // мне кажется здесь нужно по другому искать контакты с одинаковым именем
-                            if (names[i].equalsIgnoreCase(search)) {
-                                System.out.println("Вы успешно нашли контакт");
-                                System.out.println("Имя " + names[i] + " Номер: " + phoneNumbers[i]);
-                                name_not = true;// наверное вот здесь ошибка, если мы сразу нашли контакт, то он сразу выходит из цикла
+                        String nameSearch = console.nextLine();
+                        boolean flag = false;
+                        for (int i = 0; i < index; i++) {
+                            if (names[i].equals(nameSearch)) {
+                                System.out.println("Имя контакта: " + names[i] + " Номер телефона: " + phoneNumbers[i]);
+                                flag = true;
                             }
+
                         }
-                        if (!name_not) { // создаем условия через boolean, если пользователь не найден.
-                            System.out.println(search + "Имя не найдено");
+                        if (!flag) {
+                            System.out.println("Контакт не найден");
                             break;
                         }
-                        break;
                     }
+                    break;
                 case 4:
-                    if (contact == 0) { // если contact равен 0, что список контактов пуст
-                        System.out.println("Список контактов отсутствует");
-                        continue; // в начало цикла
+                    if (index == 0) {
+                        System.out.println("Список контактов пуст."); // если contact равен 0, что список контактов пуст
+                        continue;
                     } else {
-                        System.out.println("Введите имя для удаления"); // вводим соут имя для удаления
-                        String search_del = console.nextLine(); // создаем переменную search_del для удаления
-                        boolean name_del = false; // создаем флаг name_del для выхода из цикла
-                        for (int i = 0; i < contact; i++) { // наш любимый пузырьковый метод, спасибо Java, что придумали динамический массив, сколько бы я не учил этот метод, всегда как первый раз
-                            /*
-                            пробегаемся сперва по всем контактам
-                             */
-                            if (names[i].equalsIgnoreCase(search_del)) {  // если мы нашли equalsIgnoreCase имя в массиве
-                                for (int j = i; j < contact - 1; j++) { // то доходим до последнего (contact - 1) элемента массива
+                        System.out.println("Введите имя для удаления");
+                        String nameDel = console.nextLine();
+                        boolean contactDeleted = false;
 
-                                    names[j] = names[j + 1]; // то что нашли двигаем в конец
-                                    phoneNumbers[j] = phoneNumbers[j + 1]; // номер тоже двигаем в конец
+                        for (int i = 0; i < index; i++) {
+                            if (names[i].equals(nameDel)) {
+                                for (int j = 0; j < index - 1; j++) {
+                                    names[j] = names[j + 1];
+                                    phoneNumbers[j] = phoneNumbers[j + 1];
                                 }
-                                names[contact - 1] = null; // последний элемент массива (contact - 1) удаляем
-                                phoneNumbers[contact - 1] = null;// последний элемент массива (contact - 1) удаляем
-                                contact = contact - 1;// уменьшаем счетчик
-                                System.out.println("Вы успешно удалили контакт!");
-                                name_del = true; // флаг, выйти из цикла
+                                names[index - 1] = null;
+                                phoneNumbers[index - 1] = null;
+                                index = index - 1;
+                                contactDeleted = true;
+                                System.out.println("Вы успешно удалили контакт");
                                 break;
                             }
-                            /*
-                            при этом проверил контакты тоже удаляется криво-косо, классно работает если у нас записная из уникальных имен
-                            если у нас несколько имен одинаковых в списке, то удаляется первое добавленное
-                            нужно подумать как улучшить
-                             */
                         }
-                        if (!name_del) { // флаг, если не найден контакт
+                        if (!contactDeleted) {
                             System.out.println("Имя не найдено");
                             break;
                         }
-                        break;
                     }
-                default:// для чего мы ранее пытались ловить неверный ввод пользователем, не понятно.Он по факту даже не работает, неверный ввод улетает в кейс default
-                    // что тоже работает
+                    break;
+                case 5:
+                    System.out.println("Выход из программы...");
+                    System.exit(1);
+                    break;
+                default:
+
+
+                    System.out.println("Неверный ввод! Введите число от 1 до 5.");
+                    continue;
+            }
+        }
+    }
+}
+
+
+// для чего мы ранее пытались ловить неверный ввод пользователем, не понятно.Он по факту даже не работает, неверный ввод улетает в кейс default
+// что тоже работает
                     /*
                     Эта часть кода сильно лишняя, GPT или я не прав?
                     if (!console.hasNextInt()) { // здесь нужно ввести логику, неправильного ввода
@@ -140,15 +128,6 @@ public class Main {
                 System.out.println("Требуется ввести число от 1 до 5. Ваше значение некорректное!");
                 continue;
                      */
-                    System.out.println("Неверный выбор, попробуйте снова. Требуется ввести число от 1 до 5.");
-                    break;
-                case 5:
+
 // выход из программы, через большую реализацию break
-                    System.out.println("До свидания!");
-                    break;
-            }
-            if (choice == 5)
-                break;
-        }
-    }
-}
+
